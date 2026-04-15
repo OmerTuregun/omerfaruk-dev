@@ -1,0 +1,27 @@
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - next-app
+
+  next-app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+      WATCHPACK_POLLING: "true"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/app
+      - next_node_modules:/app/node_modules
+      - next_next_cache:/app/.next
+
+volumes:
+  next_node_modules:
+  next_next_cache:
