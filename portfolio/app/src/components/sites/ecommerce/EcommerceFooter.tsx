@@ -1,3 +1,47 @@
+'use client'
+
+import { useState, type MouseEvent, type ReactNode } from 'react'
+
+const scrollTo = (id: string) => {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+}
+
+function FooterLink({
+  children,
+  last,
+  onActivate,
+}: {
+  children: ReactNode
+  last?: boolean
+  onActivate: () => void
+}) {
+  const [hover, setHover] = useState(false)
+
+  return (
+    <a
+      href="#"
+      onClick={(e: MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault()
+        onActivate()
+      }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
+        fontFamily: 'var(--font-inter), sans-serif',
+        fontSize: 13,
+        color: hover ? '#c4a882' : 'rgba(196,168,130,0.6)',
+        display: 'block',
+        marginBottom: last ? 0 : 10,
+        textDecoration: 'none',
+        cursor: 'pointer',
+        transition: 'color 0.2s',
+      }}
+    >
+      {children}
+    </a>
+  )
+}
+
 export function EcommerceFooter() {
   const colors = {
     bg: '#faf8f5',
@@ -19,15 +63,6 @@ export function EcommerceFooter() {
     letterSpacing: 2,
     textTransform: 'uppercase' as const,
     marginBottom: 16,
-  }
-
-  const linkStyle = {
-    fontFamily: 'var(--font-inter), sans-serif',
-    fontSize: 13,
-    color: 'rgba(196,168,130,0.6)',
-    display: 'block' as const,
-    marginBottom: 10,
-    textDecoration: 'none' as const,
   }
 
   return (
@@ -82,26 +117,42 @@ export function EcommerceFooter() {
 
           <div>
             <div style={headingStyle}>Koleksiyon</div>
-            <span style={linkStyle}>Kaseler</span>
-            <span style={linkStyle}>Vazolar</span>
-            <span style={linkStyle}>Kupalar</span>
-            <span style={{ ...linkStyle, marginBottom: 0 }}>Ev Dekor</span>
+            <FooterLink onActivate={() => scrollTo('kategoriler')}>Kaseler</FooterLink>
+            <FooterLink onActivate={() => scrollTo('kategoriler')}>Vazolar</FooterLink>
+            <FooterLink onActivate={() => scrollTo('kategoriler')}>Kupalar</FooterLink>
+            <FooterLink last onActivate={() => scrollTo('kategoriler')}>
+              Ev Dekor
+            </FooterLink>
           </div>
 
           <div>
             <div style={headingStyle}>Bilgi</div>
-            <span style={linkStyle}>Hikayemiz</span>
-            <span style={linkStyle}>Nasıl Yapılıyor</span>
-            <span style={linkStyle}>Bakım Rehberi</span>
-            <span style={{ ...linkStyle, marginBottom: 0 }}>S.S.S.</span>
+            <FooterLink onActivate={() => scrollTo('hikaye')}>Hikayemiz</FooterLink>
+            <FooterLink onActivate={() => scrollTo('surec')}>Nasıl Yapılıyor</FooterLink>
+            <FooterLink onActivate={() => scrollTo('sss')}>Bakım Rehberi</FooterLink>
+            <FooterLink last onActivate={() => scrollTo('sss')}>
+              S.S.S.
+            </FooterLink>
           </div>
 
           <div>
             <div style={headingStyle}>İletişim</div>
-            <span style={linkStyle}>Instagram</span>
-            <span style={linkStyle}>E-posta</span>
-            <span style={linkStyle}>WhatsApp</span>
-            <span style={{ ...linkStyle, marginBottom: 0 }}>Sipariş Takibi</span>
+            <FooterLink onActivate={() => window.open('https://instagram.com', '_blank')}>
+              Instagram
+            </FooterLink>
+            <FooterLink
+              onActivate={() => {
+                window.location.href = 'mailto:info@toprakstudio.com'
+              }}
+            >
+              E-posta
+            </FooterLink>
+            <FooterLink onActivate={() => window.open('https://wa.me/905300000000', '_blank')}>
+              WhatsApp
+            </FooterLink>
+            <FooterLink last onActivate={() => scrollTo('tum-urunler')}>
+              Sipariş Takibi
+            </FooterLink>
           </div>
         </div>
 
@@ -124,4 +175,3 @@ export function EcommerceFooter() {
     </footer>
   )
 }
-

@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 
 import { products, type Product } from '@/lib/ecommerce-products'
+import { productImages } from '@/lib/ecommerce-images'
 
 const colors = {
   bg: '#faf8f5',
@@ -22,29 +23,30 @@ function formatPrice(price: number) {
   return `₺${price.toLocaleString('tr-TR')}`
 }
 
+export interface EcommerceFeaturedProps {
+  onProductClick: (product: Product) => void
+  onAddToCart: (product: Product) => void
+}
+
 function ProductCard({
   product,
   hoveredId,
   setHoveredId,
+  onProductClick,
+  onAddToCart,
 }: {
   product: Product
   hoveredId: string | null
   setHoveredId: (v: string | null) => void
+  onProductClick: (product: Product) => void
+  onAddToCart: (product: Product) => void
 }) {
   const isHovered = hoveredId === product.id
-  const imgSrc =
-    product.id === 'kase-001'
-      ? 'https://images.unsplash.com/photo-1536936812504-0e77dc3f0b40?w=700&q=80'
-      : product.id === 'vazo-001'
-        ? 'https://images.unsplash.com/photo-1631125916276-69bcd14e3980?w=700&q=80'
-        : product.id === 'kupa-001'
-          ? 'https://images.unsplash.com/photo-1721109890030-00faaa68981f?w=700&q=80'
-          : product.id === 'dekor-001'
-            ? 'https://images.unsplash.com/photo-1721328004336-c19ee38adcd1?w=700&q=80'
-            : null
+  const imgSrc = productImages[product.id] ?? null
 
   return (
     <div
+      onClick={() => onProductClick(product)}
       onMouseEnter={() => setHoveredId(product.id)}
       onMouseLeave={() => setHoveredId(null)}
       style={{ cursor: 'pointer' }}
@@ -52,8 +54,16 @@ function ProductCard({
       tabIndex={0}
       aria-label={`${product.name} ürününü incele`}
     >
-      <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 4, marginBottom: 16 }}>
-        <div style={{ height: 320, background: product.color }} />
+      <div
+        style={{
+          position: 'relative',
+          overflow: 'hidden',
+          borderRadius: 4,
+          marginBottom: 16,
+          height: 320,
+          background: product.color,
+        }}
+      >
         {imgSrc ? (
           <img
             src={imgSrc}
@@ -65,8 +75,8 @@ function ProductCard({
               height: '100%',
               objectFit: 'cover',
               objectPosition: 'center',
+              transform: hoveredId === product.id ? 'scale(1.05)' : 'scale(1)',
               transition: 'transform 0.6s ease',
-              transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               zIndex: 0,
             }}
           />
@@ -101,6 +111,10 @@ function ProductCard({
         >
           <button
             type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onProductClick(product)
+            }}
             style={{
               background: '#fff',
               color: colors.dark,
@@ -182,12 +196,35 @@ function ProductCard({
         >
           {formatPrice(product.price)}
         </div>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            onAddToCart(product)
+          }}
+          style={{
+            marginTop: 12,
+            background: 'transparent',
+            color: colors.dark,
+            border: `1px solid ${colors.border}`,
+            borderRadius: 2,
+            padding: '10px 14px',
+            fontSize: 11,
+            letterSpacing: 2,
+            cursor: 'pointer',
+            fontFamily: 'var(--font-inter), sans-serif',
+            textTransform: 'uppercase',
+          }}
+          aria-label={`${product.name} ürününü sepete ekle`}
+        >
+          Sepete Ekle
+        </button>
       </div>
     </div>
   )
 }
 
-export function EcommerceFeatured() {
+export function EcommerceFeatured({ onProductClick, onAddToCart }: EcommerceFeaturedProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.15 })
@@ -258,7 +295,13 @@ export function EcommerceFeatured() {
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.55, delay: i * 0.08 }}
             >
-              <ProductCard product={p} hoveredId={hoveredId} setHoveredId={setHoveredId} />
+              <ProductCard
+                product={p}
+                hoveredId={hoveredId}
+                setHoveredId={setHoveredId}
+                onProductClick={onProductClick}
+                onAddToCart={onAddToCart}
+              />
             </motion.div>
           ))}
         </div>

@@ -30,6 +30,9 @@ export function middleware(request: NextRequest) {
   }
 
   // Rewrite: restoran.localhost/ → /restoran
+  // dashboard.localhost → /dashboard
+  // ajans.localhost → /ajans
+  // mimari.localhost → /mimari
   const url = request.nextUrl.clone()
   url.pathname = `/${subdomain}${pathname === '/' ? '' : pathname}`
 

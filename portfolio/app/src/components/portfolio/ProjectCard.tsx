@@ -94,7 +94,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             }}
           >
             <img
-              src={`/previews/${project.id}.png`}
+              src={`/previews/${project.preview ?? project.id}.png`}
               alt={project.title}
               onError={() => setImgError(true)}
               onLoad={computeScrollOffset}

@@ -52,6 +52,30 @@ export function EcommerceHero() {
           EL YAPIMI SERAMİK & EV DEKOR
         </div>
 
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            marginBottom: 24,
+            marginTop: 8,
+          }}
+        >
+          <div style={{ width: 32, height: 1, background: '#c4a882', opacity: 0.5 }} />
+          <span
+            style={{
+              fontFamily: 'var(--font-cormorant), serif',
+              fontSize: 22,
+              color: '#c4a882',
+              letterSpacing: 3,
+              fontStyle: 'italic',
+            }}
+          >
+            Toprak Studio
+          </span>
+          <div style={{ width: 32, height: 1, background: '#c4a882', opacity: 0.5 }} />
+        </div>
+
         <h1
           style={{
             fontFamily: 'var(--font-cormorant), serif',
@@ -167,6 +191,36 @@ export function EcommerceHero() {
             transform: 'translate(-50%, -50%)',
           }}
         >
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 12,
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'var(--font-inter), sans-serif',
+                fontSize: 13,
+                color: '#c4a882',
+                letterSpacing: 2,
+                textTransform: 'uppercase',
+              }}
+            >
+              Toprak Studio
+            </span>
+            <span
+              style={{
+                fontFamily: 'var(--font-inter), sans-serif',
+                fontSize: 12,
+                color: '#d4c4b0',
+                letterSpacing: 2,
+              }}
+            >
+              El Yapımı
+            </span>
+          </div>
           <img
             src="https://images.unsplash.com/photo-1536936812504-0e77dc3f0b40?w=700&q=80"
             alt="El yapımı seramik kase"

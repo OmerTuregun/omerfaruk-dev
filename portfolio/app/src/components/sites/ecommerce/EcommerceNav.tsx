@@ -19,8 +19,14 @@ function scrollTo(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
 
-export function EcommerceNav() {
-  const [cartCount] = useState(0)
+export interface EcommerceNavProps {
+  cartCount: number
+  onCartClick: () => void
+  onLoginClick: () => void
+  onRegisterClick: () => void
+}
+
+export function EcommerceNav({ cartCount, onCartClick, onLoginClick, onRegisterClick }: EcommerceNavProps) {
   const [scrolled, setScrolled] = useState(false)
   const [hoveredLink, setHoveredLink] = useState<string | null>(null)
 
@@ -33,6 +39,7 @@ export function EcommerceNav() {
 
   const links = [
     { id: 'urunler', label: 'Ürünler' },
+    { id: 'tum-urunler', label: 'Tüm Ürünler' },
     { id: 'kategoriler', label: 'Kategoriler' },
     { id: 'hikaye', label: 'Hikayemiz' },
     { id: 'surec', label: 'Süreç' },
@@ -110,9 +117,61 @@ export function EcommerceNav() {
         ))}
       </div>
 
-      <div style={{ position: 'relative' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+          onClick={onLoginClick}
+          style={{
+            fontFamily: 'var(--font-inter), sans-serif',
+            fontSize: 13,
+            color: '#8c7b6e',
+            cursor: 'pointer',
+            marginRight: 16,
+            transition: 'color 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            ;(e.currentTarget as HTMLDivElement).style.color = '#2c1810'
+          }}
+          onMouseLeave={(e) => {
+            ;(e.currentTarget as HTMLDivElement).style.color = '#8c7b6e'
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Giriş yap"
+        >
+          Giriş Yap
+        </div>
+
         <button
           type="button"
+          onClick={onRegisterClick}
+          style={{
+            background: '#2c1810',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 2,
+            padding: '8px 20px',
+            fontFamily: 'var(--font-inter), sans-serif',
+            fontSize: 12,
+            letterSpacing: 1,
+            cursor: 'pointer',
+            marginRight: 16,
+            transition: 'background 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            ;(e.currentTarget as HTMLButtonElement).style.background = '#3d2518'
+          }}
+          onMouseLeave={(e) => {
+            ;(e.currentTarget as HTMLButtonElement).style.background = '#2c1810'
+          }}
+          aria-label="Kayıt ol"
+        >
+          Kayıt Ol
+        </button>
+
+        <div style={{ position: 'relative' }}>
+        <button
+          type="button"
+          onClick={onCartClick}
           style={{
             background: 'none',
             border: 'none',
@@ -133,26 +192,29 @@ export function EcommerceNav() {
           </svg>
         </button>
 
-        <div
-          style={{
-            position: 'absolute',
-            top: -6,
-            right: -8,
-            background: colors.dark,
-            color: '#fff',
-            fontSize: 10,
-            borderRadius: '50%',
-            width: 16,
-            height: 16,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontFamily: 'var(--font-inter), sans-serif',
-          }}
-          aria-label={`Sepet: ${cartCount} ürün`}
-        >
-          {cartCount}
-        </div>
+        {cartCount > 0 ? (
+          <div
+            style={{
+              position: 'absolute',
+              top: -6,
+              right: -8,
+              background: colors.dark,
+              color: '#fff',
+              fontSize: 10,
+              borderRadius: '50%',
+              width: 16,
+              height: 16,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontFamily: 'var(--font-inter), sans-serif',
+            }}
+            aria-label={`Sepet: ${cartCount} ürün`}
+          >
+            {cartCount}
+          </div>
+        ) : null}
+      </div>
       </div>
     </nav>
   )
